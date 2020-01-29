@@ -1,0 +1,83 @@
+# Submission
+
+### Tar
+#### Stripping Components
+- **Exercise 2**
+  - Extract `Movies`: `tar xvf TarDocs.tar --strip-components=1 "TarDocs/Movies"`
+  - Extract `Movies/ZOE_0004.mp4`: `tar xvf TarDocs.tar --strip-components=2 "TarDocs/Movies/ZOE_0004.mp4"`
+
+#### Modifying Archives
+- **Exercise 1**
+
+  ```bash
+  cd ~/Projects
+  cp sample.tar update.tar
+  tar -tf update.tar
+  touch test1.txt test2.txt
+  tar -rvf update.tar test1.txt test2.txt
+  tar -tf update.tar
+  ```
+
+- **Exercise 2**
+
+  ```bash
+  # Update timestamp of `test2.txt`
+  touch test2.txt
+
+  # Add updated file to `update.tar`
+  tar -uvf update.tar test2.txt
+  ```
+
+- **Exercise 3**
+
+  ```bash
+  tar -f update.tar --delete test1.txt
+  tar -tf update.tar
+  ```
+
+#### Incremental Backups
+- **Exercise 1**
+  - A **snapshot file** is `a list of all files that have changed since the last incremental backup`.
+  - A **backup level** is `the "count" of how many incremental backups you've taken since your starting point`.
+  - A **level 0 backup** is `your first full backup` This is the "base" for all your later incremental backups.
+
+- **Exercise 2**
+
+  ```bash
+  # Creates a level 0 backup of home
+  $ tar --create
+    --file=/var/backups/home.backup.1.tar
+    --listed-incremental=/var/log/home.snar
+    /home
+
+  # Add some files to home directory
+  $ touch ~/test1.txt ~/test2.txt
+
+  # Copy snapshot file
+  $ cp /var/log/home.snar /var/log/home.snar-1
+
+  # Create a level 1 backup
+  $ tar --create
+    --file=/var/backups/home.backup.2.tar
+    --listed-incremental=/var/log/home.snar-1
+    /home
+
+  # List contents of backup
+  $ tar -tf /var/backups/home.backup.2.tar
+    test1.txt
+    test2.txt
+  ```
+
+### Cron
+#### Managing cron
+Please paste the contents of `backup-cron-jobs.txt` in the space below.
+
+  ```bash
+  # Solution to Part 2
+  2 * * * tue,thu,sat tar -cf $HOME/data/cron/cronjob.tar $(find $HOME/data/cron -name '.txt'); tar -xf $HOME/data/cron/cronjob.tar -C $HOME/data/cron/exercises
+  ```
+
+
+/Users/rebeccabartels/Development/Hacking/ColumbiaCyber/CU-NYC-CYBER-PT-09-2019-U-C/Unit 10 Linux SysAdmin Part III
+
+/Users/rebeccabartels/Development/Hacking/Linux/SysAdmin
